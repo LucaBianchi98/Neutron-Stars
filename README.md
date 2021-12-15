@@ -11,7 +11,7 @@ A PDF file is loaded to get informations on the theory behind neutron stars and 
 # Acknowledgements
 A very grateful thanks to Matteo Tagliazucchi for suggesting me very useful papers, especially "Constraints on a phenomenologically parametrized neutron-star equation of state" by Read et al. A special thanks also to Federico Rocco for giving me advice on the formal structure of the code, without him it would have been a messy, chaotic and unreadable one file code. 
 # Bibliography
-"Neutron stars for undergraduates", R. R. Silbar, S. Reddy, 2004.
+"Neutron stars for undergraduates", R. R. Silbar, S. Reddy, 2004.\\
 "Compact Stars for Undergraduates", I. Sagert et al, 2004.
 "Constraints on a phenomenologically parametrized neutron-star equation of state", J. Read et al, 2009.
 "On Massive Neutron Cores", J. Oppenheimer, 1939.
