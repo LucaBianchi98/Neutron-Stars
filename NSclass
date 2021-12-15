@@ -12,11 +12,11 @@ class NeutronStar:
         self.eos = eq_state
     
     #Returns the RHS increment.
-    def Newton_eqs(self, r, y, index="False"):
+    def Newton_eqs(self, r, y):
         #Unknowns.
         m,p=y
         #Couple with equation of state.
-        eden = self.eos.Eden_from_Pres(p, index)
+        eden = self.eos.Eden_from_Pres(p)
         dm = 4*np.pi*eden*r**2
         dp = - (eden*m)/(r**2)
         dy = [dm, dp]
@@ -24,12 +24,12 @@ class NeutronStar:
         return dy        
     
     #Returns the RHS increment. 
-    def TOV_eqs(self, r, y, index="False"):
+    def TOV_eqs(self, r, y):
         #Unknowns.
         m,p=y
         if p<0:
             return [0,0]
-        eden = self.eos.Eden_from_Pres(p, index)
+        eden = self.eos.Eden_from_Pres(p)
         dm = 4*np.pi*eden*r**2
         dp = - (eden+p)*(m + 4*np.pi*r**3*p)/(r*(r-2*m))
         dy = [dm, dp]
