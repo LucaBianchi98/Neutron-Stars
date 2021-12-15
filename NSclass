@@ -1,6 +1,5 @@
 import numpy as np
 from calculemus import ODEsolver, cgs_geom_dictionary
-import tqdm  
 
 #Class which builds a neutron star providing it a mass and a radius given by the solutions of TOV or Newton.
 class NeutronStar:
