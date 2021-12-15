@@ -252,7 +252,7 @@ def CubicSpline(x, y):
         coefficients.append([((M[i+1] - M[i])*h[i]**2)/6, (M[i]*h[i]**2)/2, (y[i+1] - y[i] - ((M[i+1] + 2*M[i])*h[i]**2)/6), y[i]])
 
     #bisect function returns the position in the sorted list, we insert the element in the right place. 
-    def spline(val, index=True): 
+    def spline(val): 
         idx = min(bisect.bisect(x, val) - 1, n-1)
         z = (val - x[idx])/h[idx]
         Coef = coefficients[idx]
