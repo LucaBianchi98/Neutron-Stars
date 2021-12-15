@@ -145,7 +145,7 @@ def adaptiveRungeKutta(f, t, u, v, dt, csi, hmax):
     
     y = step_comp(f, t, dt, u, v)
 
-    err = max(abs(y[1] - y[3]), abs(y[1] - y[3]))
+    err = abs(y[1] - y[3])
     if err != 0:
         new_step = 0.9*dt*(csi*dt/err)**(0.25)
         
