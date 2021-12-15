@@ -22,7 +22,7 @@ class Polytropic:
         pressure = self.k*density**self.gamma
         return pressure
     #for NR polytropic Den=Eden
-    def Eden_from_Pres(self, pressure, index):
+    def Eden_from_Pres(self, pressure):
         density = self.Den_from_Pres(pressure)
         eden = self.Eden_from_Den(density)
         return eden
@@ -109,9 +109,9 @@ class Piecewise:
         layer = self.FindLayer(pressure, "pressure")
         return layer.Den_from_Pres(pressure)     
 
-    def Eden_from_Pres(self, pressure,index="False"):                
+    def Eden_from_Pres(self, pressure):                
         layer = self.FindLayer(pressure, "pressure")
-        return layer.Eden_from_Pres(pressure, index)    
+        return layer.Eden_from_Pres(pressure)    
     
     #Going from the outside to the inner region. 
     #Match the value of density/pressure untill it meet a transition value which is bigger.
