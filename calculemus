@@ -105,75 +105,21 @@ cgs_geom_dictionary = { "geom": { "lenght": {"cm": 100.,
                                 }
                         }
                         
-#Intermediate steps of RK45, returns the evaluated steps. 
-def step_comp(f, t, dt, u, v):
+def RungeKutta(f, t, dt, u, v):
+         
+    k1 = f(t, [u, v])
+    k2 = f(t + dt/2, [u + dt*k1[0]/2, v + dt*k1[1]/2])
+    k3 = f(t + dt/2, [u + dt*k2[0]/2, v + dt*k2[1]/2])
+    k4 = f(t + dt, [u + dt*k3[0], v + dt*k3[1]])
     
-    #True/False condition used to interrupt the calculation if the ks become negative.
-    #This rarely occurs but if it happens for at least one cycle with only one k, it generates an overflow.    
-    k1 = f(t, [u, v],True)
-    
-    if v + dt*k1[1]/4<0:
-        return [0,0,0,0,False]
-    k2 = f(t + dt/4, [u + dt*k1[0]/4, v + dt*k1[1]/4])
-    
-    if v + 3*dt*k1[1]/32 + 9*dt*k2[1]/32<0:
-        return [0,0,0,0,False]
-    k3 = f(t + 3*dt/8, [u + 3*dt*k1[0]/32 + 9*dt*k2[0]/32, v + 3*dt*k1[1]/32 + 9*dt*k2[1]/32])
-    
-    if v + 1932*dt*k1[1]/2197 - 7200*dt*k2[1]/2197 + 7296*dt*k3[1]/2197<0:
-        return [0,0,0,0,False]
-    k4 = f(t + 12*dt/13, [u + 1932*dt*k1[0]/2197 - 7200*dt*k2[0]/2197 + 7296*dt*k3[0]/2197, v + 1932*dt*k1[1]/2197 - 7200*dt*k2[1]/2197 + 7296*dt*k3[1]/2197])
-    
-    if v + 439*dt*k1[1]/216 - 8*dt*k2[1] + 3680*dt*k3[1]/513 - 845*dt*k4[1]/4104<0:
-        return [0,0,0,0,False]
-    k5 = f(t + dt, [u + 439*dt*k1[0]/216 - 8*dt*k2[0] + 3680*dt*k3[0]/513 - 845*dt*k4[0]/4104, v + 439*dt*k1[1]/216 - 8*dt*k2[1] + 3680*dt*k3[1]/513 - 845*dt*k4[1]/4104])
-    
-    if v - 8*dt*k1[1]/27 + 2*dt*k2[1] -3544*dt*k3[1]/2565 + 1859*dt*k4[1]/4104 -11*dt*k5[1]/40<0:
-        return [0,0,0,0,False]
-    k6 = f(t + dt/2, [u - 8*dt*k1[0]/27 + 2*dt*k2[0] -3544*dt*k3[0]/2565 + 1859*dt*k4[0]/4104 -11*dt*k5[0]/40, v - 8*dt*k1[1]/27 + 2*dt*k2[1] -3544*dt*k3[1]/2565 + 1859*dt*k4[1]/4104 -11*dt*k5[1]/40])
-
-    du = 25*dt*k1[0]/216 + 1408*dt*k3[0]/2565 + 2197*dt*k4[0]/4101 - dt*k5[0]/5
-    dv = 25*dt*k1[1]/216 + 1408*dt*k3[1]/2565 + 2197*dt*k4[1]/4101 - dt*k5[1]/5
-    du1 = 16*dt*k1[0]/135 + 6656*dt*k3[0]/12825 + 28561*dt*k4[0]/56430 - 9*dt*k5[0]/50 + 2*dt*k6[0]/55
-    dv1 = 16*dt*k1[1]/135 + 6656*dt*k3[1]/12825 + 28561*dt*k4[1]/56430 - 9*dt*k5[1]/50 + 2*dt*k6[1]/55
-        
-    return [du, dv,du1,dv1,True]
-
-#Decreases or Increases the step provided the RK45 outputs.
-#Returns the evaluated steps of step_comp and the new adapted step.    
-def adaptiveRungeKutta(f, t, u, v, dt, csi, hmax):
-    
-    y = step_comp(f, t, dt, u, v)
-
-    err = min(abs(y[1] - y[3]), abs(y[0] - y[2]))
-    if err != 0:
-        new_step = 0.9*dt*(csi*dt/err)**(0.25)
-        
-        #lower limit
-        if new_step < csi:
-            dt = csi
-            
-        #upper limit
-        elif new_step > hmax:
-            dt = hmax
-            
-        #correction of the step
-        else:
-            if new_step < dt:
-                dt = new_step
-                y = step_comp(f, t, dt, u, v) 
-            else:
-                dt = new_step
-        
-    return [y[0], y[1], dt, y[4]]
+    du = (1/6)*(dt*k1[0] + 2*dt*k2[0] + 2*dt*k3[0] + dt*k4[0])
+    dv = (1/6)*(dt*k1[1] + 2*dt*k2[1] + 2*dt*k3[1] + dt*k4[1])
+    return [du, dv]
 
 #RK applied to Newton/TOV equations. Returns solutions.
 def ODEsolver(eq_type, central_pressure):
-      
-    step = 0.1
-    csi = 1e-5
-    max_step = 10
-    
+    csi = 1e-10  
+    step = 10   
     #first condition, m=0 at r=0.
     mass = np.array([0])
     #condition on pressure (or energy) at r=0.
@@ -186,11 +132,7 @@ def ODEsolver(eq_type, central_pressure):
     #Condition on the pressure (or energy), zero out of the star.
     while(pressure[i]>0):
         
-        dy = adaptiveRungeKutta(eq_type, radius[i], mass[i], pressure[i], step, csi, max_step)
-        step = dy[2]
-        
-        if dy[3]==False:
-            break
+        dy = RungeKutta(eq_type, radius[i], step, mass[i], pressure[i])
         mass = np.append(mass, mass[i] + dy[0])
         pressure = np.append(pressure, pressure[i] + dy[1])
         radius = np.append(radius, radius[i]+step)          
@@ -260,6 +202,7 @@ def CubicSpline(x, y):
         return S_z 
     return spline 
 
+#Uncomment the model you want to use. Only one model at a time.
 read_parameters = {
 #neutrons, protons, electrons and muons#
 'PAL6':[34.380,  2.227,  2.189,  2.159], #potential method. 
