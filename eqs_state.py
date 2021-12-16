@@ -2,7 +2,7 @@ import numpy as np
 from calculemus import *
     
 class Polytropic:
-    #Unused constant in the simple NR case, crucial in the piecewise polytropic for the continuity of eden.
+    #Set to zero constant in the simple NR case, crucial value in the piecewise polytropic for the continuity of eden.
     a = 0.0
     #Constructor, polytropic parameters.
     def __init__(self, k, gamma):
