@@ -4,10 +4,10 @@ You can solve Newton equations or TOV equations for three main types of equation
 The last one consists on fitting in a piecewise polytropical equation of state a bunch of candidate equations of state, with parameters depending on the particle content of the star taken in exam, the method for modelizing the potential and constraints putted by observational datas and GR.
 As an output, you get the mass and the pressure of the considered star as a function of the distance. 
 # Prerequisites:
--Required: [Spyder](https://www.spyder-ide.org/)
--Python version 3.8
--numpy version 1.20.1
--matplotlib version 3.3.4
+- Required: [Spyder](https://www.spyder-ide.org/)
+- Python version 3.8
+- numpy version 1.20.1
+- matplotlib version 3.3.4
 # Instructions
 To test the program, you have to select one of the three possible mains (i.e. one from "NonPureNS", "RPureNS", "NRPureNS"), give a cv = central value and execute the program. 
 For the Non Pure equation of state case, you can select from the file "calculemus" one of the candidate models (only one candidate at a time).
