@@ -8,6 +8,7 @@ As an output, you get the mass and the pressure of the considered star as a func
 To test the program, you have to select one of the three possible mains (i.e. one from "NonPureNS", "RPureNS", "NRPureNS"), give a cv = central value and execute the program. 
 For the Non Pure equation of state case, you can select from the file "calculemus" one of the candidate models (only one candidate at a time).
 A PDF file is loaded to get informations on the theory behind neutron stars and numerical algorithms used in the code.
+Python version 3.8, tool used: Spyder
 # Acknowledgements
 A very grateful thanks to Matteo Tagliazucchi for suggesting me very useful papers, especially "Constraints on a phenomenologically parametrized neutron-star equation of state" by Read et al. A special thanks also to Federico Rocco for giving me advice on the formal structure of the code, without him it would have been a messy, chaotic and unreadable one file code. 
 # Bibliography
