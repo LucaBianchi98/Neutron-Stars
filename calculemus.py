@@ -201,8 +201,7 @@ def CubicSpline(x, y):
         S_z = Coef[0]*z**3 + Coef[1]*z**2 + Coef[2]*z + Coef[3]
         return S_z 
     return spline 
-
-#Uncomment the model you want to use. Only one model at a time.
+  
 read_parameters = {
 #neutrons, protons, electrons and muons#
 'PAL6':[34.380,  2.227,  2.189,  2.159], #potential method. 
