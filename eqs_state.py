@@ -92,9 +92,7 @@ class Piecewise:
                 #Eden and pressure corresponding to the densities transition values.
                 self.pressures.append(pressure)
                 self.edens.append(eden)
-
-                prev_ed = eden
-                prev_l = density
+                
                 prev_layer = layer
 
     def set_trans_const(self, prev_layer, layer, transition):
